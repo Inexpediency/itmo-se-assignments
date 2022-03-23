@@ -4,8 +4,4 @@ set(HEADER_FILES
         ioutils.h
         )
 
-set(SOURCE_FILES
-        ioutils.cpp
-        )
-
-add_library(io_lib ${SOURCE_FILES} ${HEADER_FILES})
+add_library(io_lib INTERFACE ${HEADER_FILES})
