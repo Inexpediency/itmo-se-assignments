@@ -9,10 +9,11 @@
 namespace list {
 
     template<typename T>
-    struct Node {
+    class Node {
+    public:
         T data;
         std::unique_ptr<Node<T>> next;
-
+    public:
         explicit Node(T data) : data{data}, next{nullptr} {}
     };
 
@@ -27,20 +28,23 @@ namespace list {
         List(const List &list) : size{list.size} {
             Node<T> *root = list.head.get();
 
-            std::unique_ptr<Node<T>> new_head{nullptr};
-            Node<T> *pnew_head{nullptr};
+            std::unique_ptr<Node<T>> newHead{nullptr};
+            Node<T> *pNewHead{nullptr};
             while (root) {
                 auto temp{std::make_unique<Node>(root->data)};
-                if (new_head == nullptr) {
-                    new_head = std::move(temp);
-                    pnew_head = new_head.get();
+
+                if (newHead == nullptr) {
+                    newHead = std::move(temp);
+                    pNewHead = newHead.get();
                 } else {
-                    pnew_head->next = std::move(temp);
-                    pnew_head = pnew_head->next.get();
+                    pNewHead->next = std::move(temp);
+                    pNewHead = pNewHead->next.get();
                 }
+
                 root = root->next.get();
             }
-            head = std::move(new_head);
+            
+            head = std::move(newHead);
         }
 
         List(List &&list) noexcept: size{list.size} {
