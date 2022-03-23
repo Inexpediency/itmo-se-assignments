@@ -1,20 +1,19 @@
 #include <iostream>
-#include <fstream>
 
 #include "ioutils.h"
-#include "RingList.h"
+#include "List.h"
 
-using namespace ring_list;
+using namespace list;
 
 template<typename T>
 class FlaviusJosephus {
 private:
-    RingList <T> *names;
+    Container<T> *names;
     int startIndex{};
     int step{};
 
 public:
-    FlaviusJosephus(RingList <T> *names, int startIndex, int step) {
+    FlaviusJosephus(List<T> *names, int startIndex, int step) {
         this->names = names;
         this->startIndex = startIndex;
         this->step = step;
@@ -24,7 +23,7 @@ public:
         int indexToDelete = startIndex;
         while (!names->isEmpty()) {
             indexToDelete = (indexToDelete + step) % names->getSize();
-            T name = names->deleteNode(indexToDelete);
+            T name = names->remove(indexToDelete);
             outputStream << name << std::endl;
         }
     }
@@ -45,16 +44,14 @@ int main(int argc, const char *argv[]) {
         return 0;
     }
 
-    auto names = ring_list::RingList<std::string>();
-    io::readStrings(&names, inputFile, '\n');
-
+    List<std::string> names = List<std::string>();
+    io::readStrings(&names, inputFile, ' ');
     inputFile.close();
 
     int startIndex, step;
     std::cin >> startIndex >> step;
 
-    names.print(std::cout, " ");
-
+    std::cout << names << std::endl;
     FlaviusJosephus problem = FlaviusJosephus(&names, startIndex - 1, step - 1);
     problem.printExecutionSequence(std::cout);
 
