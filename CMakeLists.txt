@@ -16,9 +16,15 @@ add_subdirectory(lib/flaviusJosephus)
 include_directories(lib/infectionSimulator)
 add_subdirectory(lib/infectionSimulator)
 
+include_directories(lib/slae)
+add_subdirectory(lib/slae)
+
 # Executables for task solutions
 add_executable(flaviusJosephus flaviusJosephus/main.cpp)
 target_link_libraries(flaviusJosephus dataStructures_lib io_lib)
 
 add_executable(infectionSimulator infectionSimulator/main.cpp)
 target_link_libraries(infectionSimulator infectionSimulator_lib)
+
+add_executable(slaeSolver slaeSolver/main.cpp)
+target_link_libraries(slaeSolver slae_lib)
