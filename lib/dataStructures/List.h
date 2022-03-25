@@ -66,9 +66,14 @@ namespace list {
         void push(T data) {
             auto temp{std::make_unique<Node<T>>(data)};
             if (head) {
-                temp->next = std::move(head);
+                Node<T>* currentNode = head.get();
+                while (currentNode->next.get()) {
+                    currentNode = currentNode->next.get();
+                }
+                currentNode->next = std::move(temp);
+            } else {
+                head = std::move(temp);
             }
-            head = std::move(temp);
 
             size++;
         }
