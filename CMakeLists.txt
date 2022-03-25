@@ -10,5 +10,5 @@ add_subdirectory(lib/dataStructures)
 include_directories(lib/io)
 add_subdirectory(lib/io)
 
-add_executable(1-2_lab_1 1-2_lab_1/main.cpp)
-target_link_libraries(1-2_lab_1 dataStructures_lib io_lib)
+add_executable(flaviusJosephus flaviusJosephus/main.cpp)
+target_link_libraries(flaviusJosephus dataStructures_lib io_lib)
