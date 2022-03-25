@@ -1,6 +1,5 @@
 #include "InfectionSimulator.h"
 
-
 using namespace infection_simulator;
 
 Cell *Cell::nextState() {
@@ -107,7 +106,7 @@ void InfectionSimulator::nextIteration() {
 
 void InfectionSimulator::infectNeighbour(int x, int y) {
     std::vector<Cell **> neighbours = getCellNeighbours(x, y);
-    int startNeighbour = (int) (static_cast<int>(rand()) % neighbours.size());
+    int startNeighbour = static_cast<int>((rand() % neighbours.size()));
 
     for (int i = 0; i < neighbours.size(); i++) {
         int currentNeighbourIndex = (startNeighbour + i) % static_cast<int>(neighbours.size());
