@@ -1,6 +1,7 @@
 #include "Matrix.h"
 
-int main() {
+int main()
+{
     Matrix m = Matrix<int>(2, 2);
 
     m[1][1] = 3;
