@@ -2,7 +2,8 @@
 
 using namespace infection_simulator;
 
-int main() {
+int main()
+{
     std::cout << "Input iterations count: ";
     int iterationsCount = 0;
     std::cin >> iterationsCount;

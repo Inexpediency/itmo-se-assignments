@@ -2,7 +2,8 @@
 
 #include "FlaviusJosephus.h"
 
-int main(int argc, const char *argv[]) {
+int main(int argc, const char* argv[])
+{
     if (argc != 2) {
         std::cout << "You need to provide input file path in the command arguments" << std::endl;
 

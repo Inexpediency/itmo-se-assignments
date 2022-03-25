@@ -1,7 +1,7 @@
 #ifndef ITMO_SE_ASSIGNMENTS_CONTAINER_H
 #define ITMO_SE_ASSIGNMENTS_CONTAINER_H
 
-template<typename T>
+template <typename T>
 class Container {
 public:
     virtual bool isEmpty() = 0;
@@ -15,4 +15,4 @@ public:
     virtual T remove(int index) = 0;
 };
 
-#endif //ITMO_SE_ASSIGNMENTS_CONTAINER_H
+#endif // ITMO_SE_ASSIGNMENTS_CONTAINER_H

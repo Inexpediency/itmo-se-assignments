@@ -1,22 +1,28 @@
 #ifndef ITMO_SE_ASSIGNMENTS_FLAVIOUSJOSEPHUS_H
 #define ITMO_SE_ASSIGNMENTS_FLAVIOUSJOSEPHUS_H
 
-#include "ioutils.h"
 #include "List.h"
+#include "ioutils.h"
 
 using namespace list;
 
-template<typename T>
+template <typename T>
 class FlaviusJosephus {
 private:
-    Container<T> *names;
+    Container<T>* names;
     int startIndex;
     int step;
 
 public:
-    FlaviusJosephus(Container<T> *names, int startIndex, int step) : names{names}, startIndex{startIndex}, step{step} {}
+    FlaviusJosephus(Container<T>* names, int startIndex, int step)
+        : names { names }
+        , startIndex { startIndex }
+        , step { step }
+    {
+    }
 
-    void printExecutionSequence(std::ostream &outputStream) {
+    void printExecutionSequence(std::ostream& outputStream)
+    {
         int indexToDelete = startIndex;
         while (!names->isEmpty()) {
             indexToDelete = (indexToDelete + step) % names->getSize();
@@ -26,4 +32,4 @@ public:
     }
 };
 
-#endif //ITMO_SE_ASSIGNMENTS_FLAVIOUSJOSEPHUS_H
+#endif // ITMO_SE_ASSIGNMENTS_FLAVIOUSJOSEPHUS_H
