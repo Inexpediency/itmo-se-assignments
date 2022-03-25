@@ -1,34 +1,6 @@
 #include <iostream>
 
-#include "ioutils.h"
-#include "List.h"
-
-using namespace list;
-
-template<typename T>
-class FlaviusJosephus {
-private:
-    Container<T> *names;
-    int startIndex{};
-    int step{};
-
-public:
-    FlaviusJosephus(List<T> *names, int startIndex, int step) {
-        this->names = names;
-        this->startIndex = startIndex;
-        this->step = step;
-    }
-
-    void printExecutionSequence(std::ostream &outputStream) {
-        int indexToDelete = startIndex;
-        while (!names->isEmpty()) {
-            indexToDelete = (indexToDelete + step) % names->getSize();
-            T name = names->remove(indexToDelete);
-            outputStream << name << std::endl;
-        }
-    }
-};
-
+#include "FlaviusJosephus.h"
 
 int main(int argc, const char *argv[]) {
     if (argc != 2) {
