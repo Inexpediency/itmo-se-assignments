@@ -35,11 +35,35 @@ public:
             matrix[i] = new double[columnCount];
     }
 
+    template <size_t rows, size_t cols>
+    explicit Matrix(double (&data)[rows][cols])
+        : rowCount { rows }
+        , columnCount { cols }
+    {
+        matrix = new double*[rows];
+        for (int i = 0; i < rows; i++)
+            matrix[i] = new double[cols];
+
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < cols; j++)
+                matrix[i][j] = data[i][j];
+    }
+
     ~Matrix()
     {
         for (int i = 0; i < rowCount; i++)
             delete matrix[i];
         delete matrix;
+    }
+
+    [[nodiscard]] int getRowCount() const
+    {
+        return rowCount;
+    }
+
+    [[nodiscard]] int getColumnCount() const
+    {
+        return columnCount;
     }
 
     void rearrangeRows(int firstIndex, int secondIndex)
