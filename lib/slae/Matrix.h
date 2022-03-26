@@ -3,12 +3,25 @@
 
 #include <iostream>
 
-#include "vector"
+class InvalidRowIndexException : public std::invalid_argument {
+public:
+    explicit InvalidRowIndexException(int index)
+        : std::invalid_argument("invalid row index=" + std::to_string(index))
+    {
+    }
+};
 
-template <typename T>
+class InvalidColumnIndexException : public std::invalid_argument {
+public:
+    explicit InvalidColumnIndexException(int index)
+        : std::invalid_argument("invalid column index=" + std::to_string(index))
+    {
+    }
+};
+
 class Matrix {
 private:
-    T** matrix;
+    double** matrix;
     int rowCount;
     int columnCount;
 
@@ -17,9 +30,9 @@ public:
         : rowCount { rowCount }
         , columnCount { columnCount }
     {
-        matrix = new T*[rowCount];
+        matrix = new double*[rowCount];
         for (int i = 0; i < rowCount; i++)
-            matrix[i] = new T[columnCount];
+            matrix[i] = new double[columnCount];
     }
 
     ~Matrix()
@@ -29,12 +42,41 @@ public:
         delete matrix;
     }
 
-    T*& operator[](int index)
+    void rearrangeRows(int firstIndex, int secondIndex)
+    {
+        if (!isValidRowIndex(firstIndex))
+            throw InvalidRowIndexException(firstIndex);
+
+        std::swap(matrix[firstIndex], matrix[secondIndex]);
+    }
+
+    void multiplyRow(int rowIndex, double multiplier)
+    {
+        if (!isValidRowIndex(rowIndex))
+            throw InvalidRowIndexException(rowIndex);
+
+        for (int i = 0; i < columnCount; i++)
+            matrix[rowIndex][i] *= multiplier;
+    }
+
+    void addMultiplied(int toIndex, int rowIndex, double multiplier)
+    {
+        if (!isValidRowIndex(toIndex))
+            throw InvalidRowIndexException(toIndex);
+
+        if (!isValidRowIndex(rowIndex))
+            throw InvalidRowIndexException(rowIndex);
+
+        for (int i = 0; i < columnCount; i++)
+            matrix[toIndex][i] += matrix[rowIndex][i] * multiplier;
+    }
+
+    double*& operator[](int index)
     {
         return matrix[index];
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const Matrix<T>& m)
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& m)
     {
         for (int i = 0; i < m.rowCount; i++) {
             for (int j = 0; j < m.columnCount; j++)
@@ -43,6 +85,17 @@ public:
         }
 
         return os;
+    }
+
+private:
+    [[nodiscard]] bool isValidRowIndex(int index) const
+    {
+        return 0 <= index && index < rowCount;
+    }
+
+    [[nodiscard]] bool isValidColumnIndex(int index) const
+    {
+        return 0 <= index && index < columnCount;
     }
 };
 
