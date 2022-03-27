@@ -5,4 +5,9 @@ set(HEADER_FILES
         Matrix.h
         )
 
-add_library(slae_lib INTERFACE ${HEADER_FILES})
+set(SOURCE_FILES
+        GaussSolver.cpp
+        Matrix.cpp
+        )
+
+add_library(slae_lib ${SOURCE_FILES} ${HEADER_FILES})

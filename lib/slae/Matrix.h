@@ -12,14 +12,6 @@ public:
     }
 };
 
-class InvalidColumnIndexException : public std::invalid_argument {
-public:
-    explicit InvalidColumnIndexException(int index)
-        : std::invalid_argument("invalid column index=" + std::to_string(index))
-    {
-    }
-};
-
 class Matrix {
 private:
     double** matrix;
@@ -27,14 +19,7 @@ private:
     int columnCount;
 
 public:
-    Matrix(int rowCount, int columnCount)
-        : rowCount { rowCount }
-        , columnCount { columnCount }
-    {
-        matrix = new double*[rowCount];
-        for (int i = 0; i < rowCount; i++)
-            matrix[i] = new double[columnCount];
-    }
+    Matrix(int rowCount, int columnCount);
 
     template <size_t rows, size_t cols>
     explicit Matrix(double (&data)[rows][cols])
@@ -50,78 +35,26 @@ public:
                 matrix[i][j] = data[i][j];
     }
 
-    ~Matrix()
-    {
-        for (int i = 0; i < rowCount; i++)
-            delete matrix[i];
-        delete matrix;
-    }
+    ~Matrix();
 
-    [[nodiscard]] int getRowCount() const
-    {
-        return rowCount;
-    }
+    [[nodiscard]] int getRowCount() const;
 
-    [[nodiscard]] int getColumnCount() const
-    {
-        return columnCount;
-    }
+    [[nodiscard]] int getColumnCount() const;
 
-    void rearrangeRows(int firstIndex, int secondIndex)
-    {
-        if (!isValidRowIndex(firstIndex))
-            throw InvalidRowIndexException(firstIndex);
+    void rearrangeRows(int firstIndex, int secondIndex);
 
-        std::swap(matrix[firstIndex], matrix[secondIndex]);
-    }
+    void multiplyRow(int rowIndex, double multiplier);
 
-    void multiplyRow(int rowIndex, double multiplier)
-    {
-        if (!isValidRowIndex(rowIndex))
-            throw InvalidRowIndexException(rowIndex);
+    void addMultiplied(int toIndex, int rowIndex, double multiplier);
 
-        for (int i = 0; i < columnCount; i++)
-            matrix[rowIndex][i] *= multiplier;
-    }
+    double*& operator[](int index);
 
-    void addMultiplied(int toIndex, int rowIndex, double multiplier)
-    {
-        if (!isValidRowIndex(toIndex))
-            throw InvalidRowIndexException(toIndex);
-
-        if (!isValidRowIndex(rowIndex))
-            throw InvalidRowIndexException(rowIndex);
-
-        for (int i = 0; i < columnCount; i++)
-            matrix[toIndex][i] += matrix[rowIndex][i] * multiplier;
-    }
-
-    double*& operator[](int index)
-    {
-        return matrix[index];
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const Matrix& m)
-    {
-        for (int i = 0; i < m.rowCount; i++) {
-            for (int j = 0; j < m.columnCount; j++)
-                os << m.matrix[i][j] << "  ";
-            os << "\n";
-        }
-
-        return os;
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
 private:
-    [[nodiscard]] bool isValidRowIndex(int index) const
-    {
-        return 0 <= index && index < rowCount;
-    }
+    [[nodiscard]] bool isValidRowIndex(int index) const;
 
-    [[nodiscard]] bool isValidColumnIndex(int index) const
-    {
-        return 0 <= index && index < columnCount;
-    }
+    [[nodiscard]] bool isValidColumnIndex(int index) const;
 };
 
 #endif // ITMO_SE_ASSIGNMENTS_MATRIX_H

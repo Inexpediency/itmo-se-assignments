@@ -25,110 +25,20 @@ private:
     int columnIndexSystemRightSide;
 
 public:
-    explicit GaussSolver(Matrix& matrix)
-        : matrix { matrix }
-        , columnIndexSystemRightSide { matrix.getColumnCount() - 1 }
-    {
-    }
+    explicit GaussSolver(Matrix& matrix);
 
 public:
-    Matrix& getMatrix()
-    {
-        return matrix;
-    }
-
-    std::vector<double> solve()
-    {
-        for (int row = straightStep(); row < matrix.getRowCount(); row++)
-            if (matrix[row][columnIndexSystemRightSide] != 0)
-                throw NoSolutionsException();
-
-        backStep();
-
-        return extractSolution();
-    }
+    Matrix& getMatrix();
+    std::vector<double> solve();
 
 private:
-    std::vector<double> extractSolution()
-    {
-        auto solution = std::vector<double>();
-
-        int row = 0;
-        for (int column = 0; column < columnIndexSystemRightSide; column++) {
-            if (matrix[row][column] != 1)
-                throw InfiniteSolutionsException();
-
-            solution.push_back(matrix[row][columnIndexSystemRightSide]);
-            row++;
-        }
-
-        return solution;
-    }
-
-    int straightStep()
-    {
-        int row = 0;
-        for (int column = 0; column < columnIndexSystemRightSide; column++) {
-            int nonzeroRow = findFirstNonzeroRowUnder(row, column);
-            if (nonzeroRow == -1)
-                continue;
-
-            matrix.rearrangeRows(row, nonzeroRow);
-            matrix.multiplyRow(row, 1 / matrix[row][column]);
-            makeZerosUnderElement(row, column);
-
-            row++;
-        }
-
-        return row;
-    }
-
-    void backStep()
-    {
-        int row = matrix.getRowCount() - 1;
-        for (int column = columnIndexSystemRightSide - 1; column >= 0; column--) {
-            int nonzeroRow = findFirstNonzeroRowUpper(row, column);
-            if (nonzeroRow == -1)
-                continue;
-
-            row = nonzeroRow;
-            makeZerosUpperElement(row, column);
-
-            row--;
-        }
-    }
-
-    int findFirstNonzeroRowUnder(int startRow, int column)
-    {
-        for (int row = startRow; row < matrix.getRowCount(); row++)
-            if (matrix[row][column] != 0)
-                return row;
-
-        return -1;
-    }
-
-    int findFirstNonzeroRowUpper(int startRow, int column)
-    {
-        for (int row = startRow; row >= 0; row--)
-            if (matrix[row][column] != 0)
-                return row;
-
-        return -1;
-    }
-
-    void makeZerosUnderElement(int elementRow, int elementColumn)
-    {
-        for (int row = elementRow + 1; row < matrix.getRowCount(); row++)
-            if (matrix[row][elementColumn] != 0)
-                matrix.addMultiplied(row, elementRow, -1 / matrix[elementRow][elementColumn] * matrix[row][elementColumn]);
-    }
-
-    void makeZerosUpperElement(int elementRow, int elementColumn)
-    {
-        for (int row = elementRow - 1; row >= 0; row--)
-            if (matrix[row][elementColumn] != 0)
-                matrix.addMultiplied(row, elementRow, -1 / matrix[elementRow][elementColumn] * matrix[row][elementColumn]);
-    }
+    std::vector<double> extractSolution();
+    int straightStep();
+    void backStep();
+    int findFirstNonzeroRowUnder(int startRow, int column);
+    int findFirstNonzeroRowUpper(int startRow, int column);
+    void makeZerosUnderElement(int elementRow, int elementColumn);
+    void makeZerosUpperElement(int elementRow, int elementColumn);
 };
 
 #endif // ITMO_SE_ASSIGNMENTS_GAUSSSOLVER_H
