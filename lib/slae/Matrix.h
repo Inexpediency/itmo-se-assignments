@@ -1,6 +1,7 @@
 #ifndef ITMO_SE_ASSIGNMENTS_MATRIX_H
 #define ITMO_SE_ASSIGNMENTS_MATRIX_H
 
+#include <iomanip>
 #include <iostream>
 
 class InvalidRowIndexException : public std::invalid_argument {
