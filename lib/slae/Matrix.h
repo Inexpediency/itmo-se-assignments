@@ -12,6 +12,7 @@ public:
     }
 };
 
+// Matrix over a field of real numbers with defined elementary operations
 class Matrix {
 private:
     double** matrix;
@@ -19,8 +20,10 @@ private:
     int columnCount;
 
 public:
+    // Initialize empty matrix
     Matrix(int rowCount, int columnCount);
 
+    // Initialize matrix with data from two-dimensional array
     template <size_t rows, size_t cols>
     explicit Matrix(double (&data)[rows][cols])
         : rowCount { rows }
@@ -37,18 +40,25 @@ public:
 
     ~Matrix();
 
+    // Returns matrix row count
     [[nodiscard]] int getRowCount() const;
 
+    // Returns matrix column count
     [[nodiscard]] int getColumnCount() const;
 
+    // Swaps two rows in matrix
     void rearrangeRows(int firstIndex, int secondIndex);
 
+    // Multiplying a row by a reversible element
     void multiplyRow(int rowIndex, double multiplier);
 
+    // Adds to row with `toIndex` row with `rowIndex` multiplied by the reversible element
     void addMultiplied(int toIndex, int rowIndex, double multiplier);
 
+    // Subscription operator overload
     double*& operator[](int index);
 
+    // Print matrix to `std::ostream`
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
 private:
